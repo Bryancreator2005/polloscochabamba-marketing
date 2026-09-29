@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Documentación API - Pollos Cochabamba</title>
+    <style>
+        :root {
+            --bg-dark: #121212;
+            --bg-sidebar: #1a1a1a;
+            --bg-card: #1e1e1e;
+            --bg-code: #000000;
+            --text-main: #e0e0e0;
+            --text-muted: #9e9e9e;
+            --accent-main: #d9534f;
+            --accent-get: #61affe;
+            --accent-post: #49cc90;
+            --border-color: #333333;
+            --font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-dark);
+            color: var(--text-main);
+            font-family: var(--font-family);
+            margin: 0;
+            padding: 0;
+            line-height: 1.6;
+            display: flex;
+            scroll-behavior: smooth;
+        }
+
+        /* Menú Lateral */
+        .sidebar {
+            width: 260px;
+            background-color: var(--bg-sidebar);
+            height: 100vh;
+            position: fixed;
+            border-right: 1px solid var(--border-color);
+            overflow-y: auto;
+            padding-top: 20px;
+        }
+
+        .sidebar h2 {
+            color: var(--accent-main);
+            font-size: 18px;
+            padding: 0 20px;
+            margin-bottom: 20px;
+        }
+
+        .sidebar ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .sidebar ul li {
+            border-bottom: 1px solid #2a2a2a;
+        }
+
+        .sidebar ul li a {
+            display: block;
+            padding: 12px 20px;
+            color: var(--text-main);
+            text-decoration: none;
+            font-size: 14px;
+            transition: background 0.2s;
+        }
+
+        .sidebar ul li a:hover {
+            background-color: #2a2a2a;
+            color: var(--accent-main);
+        }
+
+        /* Contenido Principal */
+        .content {
+            margin-left: 260px;
+            padding: 40px 60px;
+            width: calc(100% - 380px);
+            max-width: 1000px;
+        }
+
+        section {
+            margin-bottom: 60px;
+            padding-top: 20px; /* Para el scroll interactivo */
+        }
+
+        h1 { font-size: 28px; border-bottom: 2px solid var(--border-color); padding-bottom: 10px; color: #fff;}
+        h2 { font-size: 22px; color: var(--accent-main); margin-top: 30px;}
+        h3 { font-size: 16px; color: var(--text-main); margin-top: 20px;}
+        
+        p, li { font-size: 15px; color: var(--text-muted); }
+        
+        /* Tablas */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 15px;
+            background-color: var(--bg-card);
+            border-radius: 6px;
+            overflow: hidden;
+        }
+        th, td { padding: 12px 15px; text-align: left; border-bottom: 1px solid var(--border-color); font-size: 14px;}
+        th { background-color: #2a2a2a; color: #fff; font-weight: 600; }
+        td { color: var(--text-muted); }
+
+        /* Bloques de Código */
+        pre {
+            background-color: var(--bg-code);
+            padding: 15px;
+            border-radius: 6px;
+            overflow-x: auto;
+            font-family: monospace;
+            font-size: 13px;
+            color: #a6accd;
+            border: 1px solid #333;
+        }
+        code {
+            background-color: #333;
+            padding: 2px 5px;
+            border-radius: 4px;
+            font-family: monospace;
+            color: #ffcb6b;
+        }
+
+        /* Badges de Endpoints */
+        .method {
+            font-weight: bold;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 12px;
+            margin-right: 10px;
+        }
+        .method.get { background-color: rgba(97, 175, 254, 0.1); color: var(--accent-get); border: 1px solid var(--accent-get); }
+        .method.post { background-color: rgba(73, 204, 144, 0.1); color: var(--accent-post); border: 1px solid var(--accent-post); }
+        .endpoint-title { display: flex; align-items: center; margin-top: 20px; font-family: monospace; font-size: 18px; background-color: var(--bg-card); padding: 10px; border-radius: 6px; border: 1px solid var(--border-color);}
+
+        /* Utilidades */
+        .badge-req { background-color: #d9534f; color: white; padding: 2px 6px; border-radius: 3px; font-size: 11px; margin-left: 5px;}
+        .badge-opt { background-color: #5bc0de; color: white; padding: 2px 6px; border-radius: 3px; font-size: 11px; margin-left: 5px;}
+    </style>
+</head>
+<body>
+
+    <!-- MENÚ LATERAL INTERACTIVO -->
+    <nav class="sidebar">
+        <h2>Pollos Cochabamba</h2>
+        <ul>
+            <li><a href="#s1-introduccion">1. Introducción</a></li>
+            <li><a href="#s2-autenticacion">2. Acceso y Autenticación</a></li>
+            <li><a href="#s3-endpoints">3. Rutas o Endpoints</a></li>
+            <li><a href="#s4-formatos">4. Formato de Datos</a></li>
+            <li><a href="#s5-arquitectura">5. Dirección y Acceso de Datos</a></li>
+            <li><a href="#s6-diccionario">6. Diccionario de Datos</a></li>
+            <li><a href="#s7-ejemplos">7. Ejemplos de Consumo</a></li>
+            <li><a href="#s8-errores">8. Manejo de Errores</a></li>
+        </ul>
+    </nav>
+
+    <!-- CONTENIDO PRINCIPAL -->
+    <main class="content">
+
+        <!-- 1. INTRODUCCIÓN -->
+        <section id="s1-introduccion">
+            <h1>1. Introducción</h1>
+            <p><strong>Nombre de la API:</strong> API Rest CRM - Pollos Cochabamba.</p>
+            <p><strong>Objetivo:</strong> Facilitar la integración y sincronización de datos entre el departamento de Marketing (Panel Web) y el departamento de Ventas (Sistema en Visual Basic).</p>
+            <p><strong>Descripción del Proyecto:</strong> Sistema backend desarrollado en Python (Flask) que expone servicios RESTful. Permite a los sistemas de facturación conocer las promociones activas en tiempo real y registrar la información de nuevos clientes en una base central de CRM.</p>
+            <p><strong>Funcionalidades principales:</strong></p>
+            <ul>
+                <li>Lectura de catálogo de productos promocionales con precios actualizados.</li>
+                <li>Registro centralizado de clientes (Nombre y Teléfono) al momento de la venta.</li>
+            </ul>
+        </section>
+
+        <!-- 2. ACCESO Y AUTENTICACIÓN -->
+        <section id="s2-autenticacion">
+            <h1>2. Acceso y Autenticación</h1>
+            <p><strong>Método de autenticación utilizado:</strong> Entorno de Red Local (Sin Autenticación Restrictiva en fase de desarrollo). </p>
+            <p><strong>Explicación:</strong> Actualmente, la API está diseñada para operar de forma interna en la intranet (Wi-Fi) de la empresa bajo la dirección IP <code>192.168.69.141</code>. Al ser una red cerrada, las solicitudes no requieren un token criptográfico. Sin embargo, para simular un entorno de producción futuro, se ha definido una estructura base para API Keys.</p>
+            <p><strong>Forma de envío (Fase de Producción planificada):</strong> Se enviará mediante los Headers de la petición HTTP bajo la llave <code>X-API-KEY</code>.</p>
+            <h3>Ejemplo de Solicitud Autenticada (Futuro)</h3>
+            <pre>
+GET /api/marketing/promociones HTTP/1.1
+Host: 192.168.69.141:5000
+X-API-KEY: a1b2c3d4-pollos-cbba-9988
+Accept: application/json</pre>
+        </section>
+
+        <!-- 3. RUTAS O ENDPOINTS -->
+        <section id="s3-endpoints">
+            <h1>3. Rutas o Endpoints</h1>
+            <p>La API expone actualmente dos rutas principales para la operativa del negocio.</p>
+
+            <!-- Endpoint 1 -->
+            <div class="endpoint-title">
+                <span class="method get">GET</span> /api/marketing/promociones
+            </div>
+            <p><strong>Descripción:</strong> Devuelve la lista completa de promociones activas creadas por el área de marketing.</p>
+            <p><strong>Parámetros Requeridos / Opcionales:</strong> Ninguno.</p>
+            
+            <h3>Ejemplo de Respuesta HTTP 200 OK</h3>
+            <pre>
+{
+  "status": "success",
+  "total_promos": 2,
+  "data": [
+    {
+      "id_promo": 101,
+      "nombre_campana": "Promo Universitarios",
+      "id_producto": 1,
+      "precio_promocional": 15.00,
+      "activa": true
+    }
+  ]
+}</pre>
+
+            <!-- Endpoint 2 -->
+            <div class="endpoint-title">
+                <span class="method post">POST</span> /api/marketing/clientes
+            </div>
+            <p><strong>Descripción:</strong> Registra la información de contacto de un nuevo cliente captado en caja.</p>
+            
+            <h3>Parámetros Requeridos (Body JSON)</h3>
+            <table>
+                <tr><th>Parámetro</th><th>Tipo</th><th>Descripción</th></tr>
+                <tr><td><code>nombre</code> <span class="badge-req">Requerido</span></td><td>String</td><td>Nombre del cliente.</td></tr>
+                <tr><td><code>telefono</code> <span class="badge-req">Requerido</span></td><td>String</td><td>Número telefónico o celular.</td></tr>
+            </table>
+
+            <h3>Ejemplo de Solicitud</h3>
+            <pre>
+{
+    "nombre": "Luis Buezo",
+    "telefono": "77123456"
+}</pre>
+
+            <h3>Ejemplo de Respuesta HTTP 201 Created</h3>
+            <pre>
+{
+  "status": "success",
+  "mensaje": "Cliente Luis Buezo registrado en el CRM"
+}</pre>
+        </section>
+
+        <!-- 4. FORMATO DE DATOS -->
+        <section id="s4-formatos">
+            <h1>4. Formato de Datos</h1>
+            <p>Todo el intercambio de información con la API se realiza utilizando el formato estándar <strong>JSON (JavaScript Object Notation)</strong>.</p>
+            <ul>
+                <li><strong>Headers de Envío:</strong> Las solicitudes `POST` deben incluir obligatoriamente el header: <code>Content-Type: application/json</code>.</li>
+                <li><strong>Estructura de Respuesta:</strong> Todas las respuestas incluyen un campo raíz llamado <code>status</code> ("success" o "error") para facilitar la validación del lado del cliente, acompañado del campo <code>data</code> (para consultas) o <code>mensaje</code> (para confirmaciones).</li>
+                <li><strong>CORS:</strong> La API implementa políticas CORS cruzadas (flask_cors) para permitir lecturas desde navegadores en puertos distintos (Ej. Web frontend en el puerto 8000).</li>
+            </ul>
+        </section>
+
+        <!-- 5. DIRECCIÓN Y ACCESO -->
+        <section id="s5-arquitectura">
+            <h1>5. Dirección y Acceso a los Datos</h1>
+            <p>El flujo de intercambio de información opera bajo la siguiente arquitectura Cliente-Servidor:</p>
+            <p><code>[Cliente Visual Basic / Web] ➔ [Red LAN (Wi-Fi)] ➔ [API Flask (Puerto 5000)] ➔ [Estructura de Datos CRM]</code></p>
+            <ul>
+                <li><strong>Qué envía el cliente:</strong> El cliente (Ventas) solicita datos de precios o envía paquetes JSON con nombres y teléfonos.</li>
+                <li><strong>Qué procesa la API:</strong> El servidor en Python recibe, valida los formatos, calcula la longitud de los arreglos (ej. total de promociones) y procesa la lógica del negocio.</li>
+                <li><strong>Qué devuelve:</strong> La API retorna respuestas HTTP estructuradas con códigos de estado exactos (200, 201, 404, 500) junto al JSON procesado.</li>
+            </ul>
+        </section>
+
+        <!-- 6. DICCIONARIO DE DATOS -->
+        <section id="s6-diccionario">
+            <h1>6. Diccionario de Datos</h1>
+            
+            <h3>Recurso: Promoción</h3>
+            <table>
+                <tr><th>Campo</th><th>Tipo</th><th>Obligatorio</th><th>Descripción</th><th>Ejemplo</th></tr>
+                <tr><td><code>id_promo</code></td><td>Integer</td><td>Sí</td><td>Identificador único de la campaña.</td><td>101</td></tr>
+                <tr><td><code>nombre_campana</code></td><td>String</td><td>Sí</td><td>Nombre descriptivo de la promoción.</td><td>"Promo Universitarios"</td></tr>
+                <tr><td><code>id_producto</code></td><td>Integer</td><td>Sí</td><td>Referencia al ID de la base de Ventas.</td><td>1</td></tr>
+                <tr><td><code>precio_promocional</code></td><td>Float</td><td>Sí</td><td>Precio con descuento aplicado (Bs).</td><td>15.00</td></tr>
+                <tr><td><code>activa</code></td><td>Boolean</td><td>Sí</td><td>Estado actual de la campaña.</td><td>true</td></tr>
+            </table>
+
+            <h3>Recurso: Cliente (CRM)</h3>
+            <table>
+                <tr><th>Campo</th><th>Tipo</th><th>Obligatorio</th><th>Descripción</th><th>Ejemplo</th></tr>
+                <tr><td><code>nombre</code></td><td>String</td><td>Sí</td><td>Nombre del consumidor final.</td><td>"Ana Suarez"</td></tr>
+                <tr><td><code>telefono</code></td><td>String</td><td>Sí</td><td>Contacto celular para WhatsApp marketing.</td><td>"65498732"</td></tr>
+            </table>
+        </section>
+
+        <!-- 7. EJEMPLOS DE CONSUMO -->
+        <section id="s7-ejemplos">
+            <h1>7. Ejemplos de Consumo</h1>
+            
+            <h3>Desde JavaScript (Frontend Web) - Método GET</h3>
+            <pre>
+fetch('http://192.168.69.141:5000/api/marketing/promociones')
+  .then(response => response.json())
+  .then(data => console.log('Promociones:', data))
+  .catch(error => console.error('Error de red:', error));</pre>
+
+            <h3>Desde Visual Basic .NET (Equipo de Ventas) - Método POST</h3>
+            <pre>
+Dim client As New HttpClient()
+Dim jsonData As String = "{""nombre"":""Carlos"",""telefono"":""78945612""}"
+Dim content As New StringContent(jsonData, Encoding.UTF8, "application/json")
+
+Dim response = Await client.PostAsync("http://192.168.69.141:5000/api/marketing/clientes", content)
+Dim responseString = Await response.Content.ReadAsStringAsync()
+Console.WriteLine(responseString)</pre>
+
+            <h3>Configuración en Postman</h3>
+            <ul>
+                <li><strong>Método:</strong> Seleccionar POST o GET según el endpoint.</li>
+                <li><strong>URL:</strong> <code>http://192.168.69.141:5000/api/...</code></li>
+                <li><strong>Body (solo para POST):</strong> Pestaña <code>Body</code> ➔ <code>raw</code> ➔ seleccionar <code>JSON</code>.</li>
+            </ul>
+        </section>
+
+        <!-- 8. MANEJO DE ERRORES -->
+        <section id="s8-errores">
+            <h1>8. Manejo de Errores</h1>
+            <p>La API utiliza códigos de estado HTTP estándar. Cualquier solicitud que falle retornará un JSON con la estructura del error.</p>
+            
+            <table>
+                <tr><th>Código HTTP</th><th>Significado</th><th>Acción requerida del Cliente</th></tr>
+                <tr><td><strong>200 OK</strong></td><td>Éxito.</td><td>Procesar la propiedad <code>data</code> de la respuesta.</td></tr>
+                <tr><td><strong>201 Created</strong></td><td>Registro Creado.</td><td>Confirmar al usuario en pantalla que el guardado fue exitoso.</td></tr>
+                <tr><td><strong>400 Bad Request</strong></td><td>Mala Petición.</td><td>El JSON enviado en el POST está mal formateado o faltan campos obligatorios.</td></tr>
+                <tr><td><strong>404 Not Found</strong></td><td>No Encontrado.</td><td>Verificar que la ruta escrita en la URL sea exactamente la documentada.</td></tr>
+                <tr><td><strong>500 Internal Error</strong></td><td>Error de Servidor.</td><td>Contactar al administrador backend. Posible falla de ejecución de Python.</td></tr>
+            </table>
+
+            <h3>Ejemplo de Respuesta de Error (Falta de datos)</h3>
+            <pre>
+{
+  "status": "error",
+  "mensaje": "El campo 'nombre' es obligatorio."
+}</pre>
+        </section>
+
+    </main>
+
+</body>
+</html>
