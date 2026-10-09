@@ -3,343 +3,518 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Documentación API - Pollos Cochabamba</title>
+    <title>Pollos Cochabamba - Panel Corporativo</title>
+    <!-- Fuente moderna de Google -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
         :root {
-            --bg-dark: #121212;
-            --bg-sidebar: #1a1a1a;
-            --bg-card: #1e1e1e;
-            --bg-code: #000000;
-            --text-main: #e0e0e0;
-            --text-muted: #9e9e9e;
-            --accent-main: #d9534f;
-            --accent-get: #61affe;
-            --accent-post: #49cc90;
-            --border-color: #333333;
-            --font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            --primary: #e63946; /* Rojo principal */
+            --primary-hover: #d62828;
+            --bg-color: #f3f4f6;
+            --card-bg: #ffffff;
+            --text-dark: #1f2937;
+            --text-light: #6b7280;
+            --border-color: #e5e7eb;
+            --success: #10b981;
         }
 
         body {
-            background-color: var(--bg-dark);
-            color: var(--text-main);
-            font-family: var(--font-family);
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-dark);
             margin: 0;
-            padding: 0;
-            line-height: 1.6;
-            display: flex;
-            scroll-behavior: smooth;
+            padding: 40px 20px;
         }
 
-        /* Menú Lateral */
-        .sidebar {
-            width: 260px;
-            background-color: var(--bg-sidebar);
-            height: 100vh;
-            position: fixed;
-            border-right: 1px solid var(--border-color);
-            overflow-y: auto;
-            padding-top: 20px;
-        }
-
-        .sidebar h2 {
-            color: var(--accent-main);
-            font-size: 18px;
-            padding: 0 20px;
-            margin-bottom: 20px;
-        }
-
-        .sidebar ul {
-            list-style: none;
-            padding: 0;
-            margin: 0;
-        }
-
-        .sidebar ul li {
-            border-bottom: 1px solid #2a2a2a;
-        }
-
-        .sidebar ul li a {
-            display: block;
-            padding: 12px 20px;
-            color: var(--text-main);
-            text-decoration: none;
-            font-size: 14px;
-            transition: background 0.2s;
-        }
-
-        .sidebar ul li a:hover {
-            background-color: #2a2a2a;
-            color: var(--accent-main);
-        }
-
-        /* Contenido Principal */
-        .content {
-            margin-left: 260px;
-            padding: 40px 60px;
-            width: calc(100% - 380px);
+        .dashboard-container {
             max-width: 1000px;
+            margin: 0 auto;
         }
 
-        section {
-            margin-bottom: 60px;
-            padding-top: 20px; /* Para el scroll interactivo */
+        /* Encabezado */
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .header h1 {
+            color: var(--primary);
+            margin: 0 0 10px 0;
+            font-size: 28px;
+        }
+        .header p {
+            color: var(--text-light);
+            margin: 0;
         }
 
-        h1 { font-size: 28px; border-bottom: 2px solid var(--border-color); padding-bottom: 10px; color: #fff;}
-        h2 { font-size: 22px; color: var(--accent-main); margin-top: 30px;}
-        h3 { font-size: 16px; color: var(--text-main); margin-top: 20px;}
+        /* Navegación (Píldoras) */
+        .nav-pills {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+        .nav-btn {
+            background-color: var(--card-bg);
+            border: 1px solid var(--border-color);
+            color: var(--text-dark);
+            padding: 12px 24px;
+            border-radius: 30px;
+            cursor: pointer;
+            font-size: 15px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+        .nav-btn.active {
+            background-color: var(--primary);
+            color: white;
+            border-color: var(--primary);
+            box-shadow: 0 4px 6px rgba(230, 57, 70, 0.3);
+        }
+        .nav-btn:hover:not(.active) {
+            background-color: #f9fafb;
+        }
+
+        /* Tarjetas (Contenido) */
+        .content-card {
+            background-color: var(--card-bg);
+            border-radius: 12px;
+            padding: 30px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.03);
+            border: 1px solid var(--border-color);
+            display: none; /* Oculto por defecto */
+        }
+        .content-card.active-card {
+            display: block;
+            animation: fadeIn 0.4s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Formulario moderno */
+        .form-row {
+            display: flex;
+            gap: 20px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+        .form-group {
+            flex: 1;
+            min-width: 250px;
+        }
+        .form-group label {
+            display: block;
+            font-size: 14px;
+            color: var(--text-light);
+            margin-bottom: 8px;
+            font-weight: 500;
+        }
+        .form-control {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1.5px solid var(--border-color);
+            border-radius: 8px;
+            font-size: 15px;
+            font-family: inherit;
+            color: var(--text-dark);
+            box-sizing: border-box;
+            transition: border-color 0.2s;
+        }
+        .form-control:focus {
+            outline: none;
+            border-color: var(--primary);
+        }
         
-        p, li { font-size: 15px; color: var(--text-muted); }
-        
-        /* Tablas */
+        .btn-submit {
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            padding: 14px 28px;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 500;
+            cursor: pointer;
+            width: 100%;
+            transition: background 0.3s;
+            margin-top: 10px;
+        }
+        .btn-submit:hover {
+            background-color: var(--primary-hover);
+        }
+
+        /* Tabla estilizada */
+        .table-responsive {
+            overflow-x: auto;
+        }
         table {
             width: 100%;
             border-collapse: collapse;
-            margin-top: 15px;
-            background-color: var(--bg-card);
-            border-radius: 6px;
+        }
+        th, td {
+            padding: 15px;
+            text-align: left;
+            border-bottom: 1px solid var(--border-color);
+        }
+        th {
+            background-color: #f8fafc;
+            color: var(--text-light);
+            font-weight: 600;
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        td {
+            font-size: 15px;
+            vertical-align: middle;
+        }
+        tr:hover td {
+            background-color: #f9fafb;
+        }
+        .badge {
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+        .badge-activo { background-color: #d1fae5; color: #065f46; }
+        .badge-inactivo { background-color: #fee2e2; color: #991b1b; }
+
+        /* ESTILOS NUEVOS: CATÁLOGO VISUAL DE TARJETAS */
+        .catalogo-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 20px;
+            margin-top: 10px;
+        }
+
+        .tarjeta-promo {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 25px 20px;
+            text-align: center;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.02);
+            transition: transform 0.2s, box-shadow 0.2s, border-color 0.2s;
+            position: relative;
             overflow: hidden;
         }
-        th, td { padding: 12px 15px; text-align: left; border-bottom: 1px solid var(--border-color); font-size: 14px;}
-        th { background-color: #2a2a2a; color: #fff; font-weight: 600; }
-        td { color: var(--text-muted); }
 
-        /* Bloques de Código */
-        pre {
-            background-color: var(--bg-code);
-            padding: 15px;
-            border-radius: 6px;
-            overflow-x: auto;
-            font-family: monospace;
-            font-size: 13px;
-            color: #a6accd;
-            border: 1px solid #333;
-        }
-        code {
-            background-color: #333;
-            padding: 2px 5px;
-            border-radius: 4px;
-            font-family: monospace;
-            color: #ffcb6b;
+        .tarjeta-promo:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 15px rgba(0,0,0,0.08);
+            border-color: var(--primary);
         }
 
-        /* Badges de Endpoints */
-        .method {
-            font-weight: bold;
-            padding: 4px 8px;
-            border-radius: 4px;
-            font-size: 12px;
-            margin-right: 10px;
+        .badge-etiqueta {
+            position: absolute;
+            top: 15px;
+            right: -30px;
+            background: var(--success);
+            color: white;
+            padding: 5px 40px;
+            font-size: 11px;
+            font-weight: 700;
+            transform: rotate(45deg);
+            text-transform: uppercase;
         }
-        .method.get { background-color: rgba(97, 175, 254, 0.1); color: var(--accent-get); border: 1px solid var(--accent-get); }
-        .method.post { background-color: rgba(73, 204, 144, 0.1); color: var(--accent-post); border: 1px solid var(--accent-post); }
-        .endpoint-title { display: flex; align-items: center; margin-top: 20px; font-family: monospace; font-size: 18px; background-color: var(--bg-card); padding: 10px; border-radius: 6px; border: 1px solid var(--border-color);}
 
-        /* Utilidades */
-        .badge-req { background-color: #d9534f; color: white; padding: 2px 6px; border-radius: 3px; font-size: 11px; margin-left: 5px;}
-        .badge-opt { background-color: #5bc0de; color: white; padding: 2px 6px; border-radius: 3px; font-size: 11px; margin-left: 5px;}
+        .tarjeta-icono { font-size: 45px; margin-bottom: 15px; }
+        .tarjeta-titulo { font-size: 18px; font-weight: 600; color: var(--text-dark); margin: 10px 0; }
+        .tarjeta-precio { font-size: 24px; font-weight: 700; color: var(--primary); margin: 15px 0; }
+        .tarjeta-btn { 
+            background-color: var(--success); 
+            color: white;
+            border: none;
+            width: 100%; 
+            padding: 12px; 
+            border-radius: 8px;
+            font-size: 14px; 
+            font-weight: 500;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+        .tarjeta-btn:hover { background-color: #059669; }
+
     </style>
 </head>
 <body>
 
-    <!-- MENÚ LATERAL INTERACTIVO -->
-    <nav class="sidebar">
-        <h2>Pollos Cochabamba</h2>
-        <ul>
-            <li><a href="#s1-introduccion">1. Introducción</a></li>
-            <li><a href="#s2-autenticacion">2. Acceso y Autenticación</a></li>
-            <li><a href="#s3-endpoints">3. Rutas o Endpoints</a></li>
-            <li><a href="#s4-formatos">4. Formato de Datos</a></li>
-            <li><a href="#s5-arquitectura">5. Dirección y Acceso de Datos</a></li>
-            <li><a href="#s6-diccionario">6. Diccionario de Datos</a></li>
-            <li><a href="#s7-ejemplos">7. Ejemplos de Consumo</a></li>
-            <li><a href="#s8-errores">8. Manejo de Errores</a></li>
-        </ul>
-    </nav>
+<div class="dashboard-container">
+    
+    <div class="header">
+        <h1>Pollos Cochabamba</h1>
+        <p>Gestión de Insumos y Promociones</p>
+    </div>
 
-    <!-- CONTENIDO PRINCIPAL -->
-    <main class="content">
+    <!-- Navegación -->
+    <div class="nav-pills">
+        <button class="nav-btn active" onclick="cambiarVista('registro')" id="btn-registro">➕ Crear Promoción</button>
+        <button class="nav-btn" onclick="cambiarVista('lista')" id="btn-lista">📦 Catálogo de Productos</button>
+        <button class="nav-btn" onclick="cambiarVista('historial')" id="btn-historial">🕒 Historial de Combos</button>
+        <button class="nav-btn" onclick="cambiarVista('catalogo')" id="btn-catalogo">🛒 Promociones a la Venta</button>
+    </div>
 
-        <!-- 1. INTRODUCCIÓN -->
-        <section id="s1-introduccion">
-            <h1>1. Introducción</h1>
-            <p><strong>Nombre de la API:</strong> API Rest CRM - Pollos Cochabamba.</p>
-            <p><strong>Objetivo:</strong> Facilitar la integración y sincronización de datos entre el departamento de Marketing (Panel Web) y el departamento de Ventas (Sistema en Visual Basic).</p>
-            <p><strong>Descripción del Proyecto:</strong> Sistema backend desarrollado en Python (Flask) que expone servicios RESTful. Permite a los sistemas de facturación conocer las promociones activas en tiempo real y registrar la información de nuevos clientes en una base central de CRM.</p>
-            <p><strong>Funcionalidades principales:</strong></p>
-            <ul>
-                <li>Lectura de catálogo de productos promocionales con precios actualizados.</li>
-                <li>Registro centralizado de clientes (Nombre y Teléfono) al momento de la venta.</li>
-            </ul>
-        </section>
-
-        <!-- 2. ACCESO Y AUTENTICACIÓN -->
-        <section id="s2-autenticacion">
-            <h1>2. Acceso y Autenticación</h1>
-            <p><strong>Método de autenticación utilizado:</strong> Entorno de Red Local (Sin Autenticación Restrictiva en fase de desarrollo). </p>
-            <p><strong>Explicación:</strong> Actualmente, la API está diseñada para operar de forma interna en la intranet (Wi-Fi) de la empresa bajo la dirección IP <code>192.168.69.141</code>. Al ser una red cerrada, las solicitudes no requieren un token criptográfico. Sin embargo, para simular un entorno de producción futuro, se ha definido una estructura base para API Keys.</p>
-            <p><strong>Forma de envío (Fase de Producción planificada):</strong> Se enviará mediante los Headers de la petición HTTP bajo la llave <code>X-API-KEY</code>.</p>
-            <h3>Ejemplo de Solicitud Autenticada (Futuro)</h3>
-            <pre>
-GET /api/marketing/promociones HTTP/1.1
-Host: 192.168.69.141:5000
-X-API-KEY: a1b2c3d4-pollos-cbba-9988
-Accept: application/json</pre>
-        </section>
-
-        <!-- 3. RUTAS O ENDPOINTS -->
-        <section id="s3-endpoints">
-            <h1>3. Rutas o Endpoints</h1>
-            <p>La API expone actualmente dos rutas principales para la operativa del negocio.</p>
-
-            <!-- Endpoint 1 -->
-            <div class="endpoint-title">
-                <span class="method get">GET</span> /api/marketing/promociones
+    <!-- VISTA 1: Formulario -->
+    <div class="content-card active-card" id="vista-registro">
+        <h2 style="margin-top:0; font-size: 20px; color: var(--text-dark);">Detalles del Nuevo Combo</h2>
+        
+        <form id="form-crear" onsubmit="guardarPromocionReal(event)">
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="combo-productos">Seleccionar Insumo/Producto Base</label>
+                    <select id="combo-productos" class="form-control" required>
+                        <option value="">Cargando catálogo...</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="input-campana">Nombre de la Promoción</label>
+                    <input type="text" id="input-campana" class="form-control" placeholder="Ej: Super Combo Fin de Semana" required>
+                </div>
             </div>
-            <p><strong>Descripción:</strong> Devuelve la lista completa de promociones activas creadas por el área de marketing.</p>
-            <p><strong>Parámetros Requeridos / Opcionales:</strong> Ninguno.</p>
-            
-            <h3>Ejemplo de Respuesta HTTP 200 OK</h3>
-            <pre>
-{
-  "status": "success",
-  "total_promos": 2,
-  "data": [
-    {
-      "id_promo": 101,
-      "nombre_campana": "Promo Universitarios",
-      "id_producto": 1,
-      "precio_promocional": 15.00,
-      "activa": true
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="input-precio">Precio al Público (Bs)</label>
+                    <input type="number" id="input-precio" class="form-control" step="0.50" placeholder="0.00" required>
+                </div>
+                
+                <div class="form-group" style="display: flex; align-items: center; justify-content: center; background: #f8fafc; border-radius: 8px; border: 1px dashed #cbd5e1;">
+                    <span style="color: var(--text-light); font-size: 14px;">El combo se guardará como <strong>Activo</strong> por defecto.</span>
+                </div>
+            </div>
+
+            <button type="submit" class="btn-submit">Guardar Promoción en Base de Datos</button>
+        </form>
+    </div>
+
+    <!-- VISTA 2: Tabla de Catálogo de Productos (IP 157) -->
+    <div class="content-card" id="vista-lista">
+        <h2 style="margin-top:0; font-size: 20px; color: var(--text-dark);">Inventario de Insumos Disponibles</h2>
+        
+        <div class="table-responsive">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Nombre del Producto</th>
+                        <th>Categoría</th>
+                        <th>Unidad</th>
+                        <th>Stock Actual</th>
+                        <th>Estado</th>
+                    </tr>
+                </thead>
+                <tbody id="tabla-productos">
+                    <tr><td colspan="5" style="text-align: center; color: var(--text-light);">Cargando datos desde la API...</td></tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- VISTA 3: Historial de Promociones Creadas -->
+    <div class="content-card" id="vista-historial">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+            <h2 style="margin:0; font-size: 20px; color: var(--text-dark);">Promociones (Historial Completo)</h2>
+            <button onclick="cargarHistorial()" style="background:var(--primary); color:white; border:none; padding:8px 16px; border-radius:8px; cursor:pointer;">↻ Refrescar</button>
+        </div>
+        
+        <div class="table-responsive">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Nombre de la Campaña</th>
+                        <th>Precio (Bs)</th>
+                        <th>Estado</th>
+                    </tr>
+                </thead>
+                <tbody id="tabla-historial">
+                    <tr><td colspan="3" style="text-align: center; color: var(--text-light);">Cargando historial de combos...</td></tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- VISTA 4: Catálogo Visual Listo para Vender -->
+    <div class="content-card" id="vista-catalogo">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+            <h2 style="margin:0; font-size: 20px; color: var(--text-dark);">Combos Listos para Ventas</h2>
+            <button onclick="cargarHistorial()" style="background:var(--primary); color:white; border:none; padding:8px 16px; border-radius:8px; cursor:pointer;">↻ Actualizar Catálogo</button>
+        </div>
+        
+        <div class="catalogo-grid" id="grid-catalogo">
+            <!-- Las tarjetas se insertarán aquí con JavaScript -->
+            <p style="text-align: center; color: var(--text-light); grid-column: 1 / -1;">Cargando promociones...</p>
+        </div>
+    </div>
+
+</div>
+
+<script>
+    const urlAPIProductos = 'http://192.168.68.157:5000/api/v1/productos';
+    const urlAPIPromociones = 'http://192.168.69.141:5000/api/marketing/promociones';
+
+    // Intercambiar las vistas (tarjetas)
+    function cambiarVista(vista) {
+        // Limpiamos la clase activa de todos los botones y vistas
+        ['registro', 'lista', 'historial', 'catalogo'].forEach(v => {
+            document.getElementById(`btn-${v}`).classList.remove('active');
+            document.getElementById(`vista-${v}`).classList.remove('active-card');
+        });
+
+        // Agregamos la clase activa a la opción seleccionada
+        document.getElementById(`btn-${vista}`).classList.add('active');
+        document.getElementById(`vista-${vista}`).classList.add('active-card');
+
+        // Si el usuario entra a historial o catálogo, recargamos los datos desde la API
+        if(vista === 'historial' || vista === 'catalogo') {
+            cargarHistorial();
+        }
     }
-  ]
-}</pre>
 
-            <!-- Endpoint 2 -->
-            <div class="endpoint-title">
-                <span class="method post">POST</span> /api/marketing/clientes
-            </div>
-            <p><strong>Descripción:</strong> Registra la información de contacto de un nuevo cliente captado en caja.</p>
-            
-            <h3>Parámetros Requeridos (Body JSON)</h3>
-            <table>
-                <tr><th>Parámetro</th><th>Tipo</th><th>Descripción</th></tr>
-                <tr><td><code>nombre</code> <span class="badge-req">Requerido</span></td><td>String</td><td>Nombre del cliente.</td></tr>
-                <tr><td><code>telefono</code> <span class="badge-req">Requerido</span></td><td>String</td><td>Número telefónico o celular.</td></tr>
-            </table>
+    // Cargar Insumos al iniciar
+    document.addEventListener('DOMContentLoaded', () => {
+        fetch(urlAPIProductos)
+            .then(res => res.json())
+            .then(data => {
+                const productos = data.datos || [];
+                const select = document.getElementById('combo-productos');
+                const tbody = document.getElementById('tabla-productos');
+                
+                select.innerHTML = '<option value="">-- Elija un producto de la lista --</option>';
+                tbody.innerHTML = '';
 
-            <h3>Ejemplo de Solicitud</h3>
-            <pre>
-{
-    "nombre": "Luis Buezo",
-    "telefono": "77123456"
-}</pre>
+                productos.forEach(prod => {
+                    const option = document.createElement('option');
+                    option.value = prod.id;
+                    option.textContent = prod.nombre;
+                    select.appendChild(option);
 
-            <h3>Ejemplo de Respuesta HTTP 201 Created</h3>
-            <pre>
-{
-  "status": "success",
-  "mensaje": "Cliente Luis Buezo registrado en el CRM"
-}</pre>
-        </section>
+                    const claseBadge = prod.activo ? "badge badge-activo" : "badge badge-inactivo";
+                    const textoBadge = prod.activo ? "Activo" : "Inactivo";
+                    
+                    tbody.innerHTML += `
+                        <tr>
+                            <td style="font-weight: 500; color: var(--text-dark);">${prod.nombre}</td>
+                            <td>${prod.categoria}</td>
+                            <td>${prod.unidad_base}</td>
+                            <td>${prod.stock_base.toLocaleString()}</td>
+                            <td><span class="${claseBadge}">${textoBadge}</span></td>
+                        </tr>
+                    `;
+                });
+            })
+            .catch(err => {
+                document.getElementById('combo-productos').innerHTML = '<option value="">Fallo de conexión</option>';
+                document.getElementById('tabla-productos').innerHTML = '<tr><td colspan="5" style="color:red; text-align:center;">Error al conectar con la IP 157</td></tr>';
+            });
 
-        <!-- 4. FORMATO DE DATOS -->
-        <section id="s4-formatos">
-            <h1>4. Formato de Datos</h1>
-            <p>Todo el intercambio de información con la API se realiza utilizando el formato estándar <strong>JSON (JavaScript Object Notation)</strong>.</p>
-            <ul>
-                <li><strong>Headers de Envío:</strong> Las solicitudes `POST` deben incluir obligatoriamente el header: <code>Content-Type: application/json</code>.</li>
-                <li><strong>Estructura de Respuesta:</strong> Todas las respuestas incluyen un campo raíz llamado <code>status</code> ("success" o "error") para facilitar la validación del lado del cliente, acompañado del campo <code>data</code> (para consultas) o <code>mensaje</code> (para confirmaciones).</li>
-                <li><strong>CORS:</strong> La API implementa políticas CORS cruzadas (flask_cors) para permitir lecturas desde navegadores en puertos distintos (Ej. Web frontend en el puerto 8000).</li>
-            </ul>
-        </section>
+        // Cargamos las promociones la primera vez
+        cargarHistorial();
+    });
 
-        <!-- 5. DIRECCIÓN Y ACCESO -->
-        <section id="s5-arquitectura">
-            <h1>5. Dirección y Acceso a los Datos</h1>
-            <p>El flujo de intercambio de información opera bajo la siguiente arquitectura Cliente-Servidor:</p>
-            <p><code>[Cliente Visual Basic / Web] ➔ [Red LAN (Wi-Fi)] ➔ [API Flask (Puerto 5000)] ➔ [Estructura de Datos CRM]</code></p>
-            <ul>
-                <li><strong>Qué envía el cliente:</strong> El cliente (Ventas) solicita datos de precios o envía paquetes JSON con nombres y teléfonos.</li>
-                <li><strong>Qué procesa la API:</strong> El servidor en Python recibe, valida los formatos, calcula la longitud de los arreglos (ej. total de promociones) y procesa la lógica del negocio.</li>
-                <li><strong>Qué devuelve:</strong> La API retorna respuestas HTTP estructuradas con códigos de estado exactos (200, 201, 404, 500) junto al JSON procesado.</li>
-            </ul>
-        </section>
+    // Guardar Promoción
+    function guardarPromocionReal(event) {
+        event.preventDefault();
 
-        <!-- 6. DICCIONARIO DE DATOS -->
-        <section id="s6-diccionario">
-            <h1>6. Diccionario de Datos</h1>
-            
-            <h3>Recurso: Promoción</h3>
-            <table>
-                <tr><th>Campo</th><th>Tipo</th><th>Obligatorio</th><th>Descripción</th><th>Ejemplo</th></tr>
-                <tr><td><code>id_promo</code></td><td>Integer</td><td>Sí</td><td>Identificador único de la campaña.</td><td>101</td></tr>
-                <tr><td><code>nombre_campana</code></td><td>String</td><td>Sí</td><td>Nombre descriptivo de la promoción.</td><td>"Promo Universitarios"</td></tr>
-                <tr><td><code>id_producto</code></td><td>Integer</td><td>Sí</td><td>Referencia al ID de la base de Ventas.</td><td>1</td></tr>
-                <tr><td><code>precio_promocional</code></td><td>Float</td><td>Sí</td><td>Precio con descuento aplicado (Bs).</td><td>15.00</td></tr>
-                <tr><td><code>activa</code></td><td>Boolean</td><td>Sí</td><td>Estado actual de la campaña.</td><td>true</td></tr>
-            </table>
+        const payload = {
+            id_producto: parseInt(document.getElementById('combo-productos').value),
+            nombre_campana: document.getElementById('input-campana').value,
+            precio_promocional: parseFloat(document.getElementById('input-precio').value),
+            activa: true
+        };
 
-            <h3>Recurso: Cliente (CRM)</h3>
-            <table>
-                <tr><th>Campo</th><th>Tipo</th><th>Obligatorio</th><th>Descripción</th><th>Ejemplo</th></tr>
-                <tr><td><code>nombre</code></td><td>String</td><td>Sí</td><td>Nombre del consumidor final.</td><td>"Ana Suarez"</td></tr>
-                <tr><td><code>telefono</code></td><td>String</td><td>Sí</td><td>Contacto celular para WhatsApp marketing.</td><td>"65498732"</td></tr>
-            </table>
-        </section>
+        fetch(urlAPIPromociones, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(payload)
+        })
+        .then(res => {
+            if(!res.ok) throw new Error('Error en el backend');
+            return res.json();
+        })
+        .then(data => {
+            document.getElementById('form-crear').reset();
+            // Al guardar, llevamos al usuario al catálogo para ver su producto listo
+            cambiarVista('catalogo');
+            alert('✅ ¡Combo guardado exitosamente en la base de datos!');
+        })
+        .catch(err => {
+            console.error(err);
+            alert('❌ Hubo un error al guardar. Revisa que Flask esté corriendo en la IP 141 puerto 5000.');
+        });
+    }
 
-        <!-- 7. EJEMPLOS DE CONSUMO -->
-        <section id="s7-ejemplos">
-            <h1>7. Ejemplos de Consumo</h1>
-            
-            <h3>Desde JavaScript (Frontend Web) - Método GET</h3>
-            <pre>
-fetch('http://192.168.69.141:5000/api/marketing/promociones')
-  .then(response => response.json())
-  .then(data => console.log('Promociones:', data))
-  .catch(error => console.error('Error de red:', error));</pre>
+    // Traer las promociones de Flask para la Tabla (Historial) y las Tarjetas (Catálogo)
+    function cargarHistorial() {
+        const tbody = document.getElementById('tabla-historial');
+        const gridCatalogo = document.getElementById('grid-catalogo');
+        
+        tbody.innerHTML = '<tr><td colspan="3" style="text-align: center; color: var(--text-light);">Buscando promociones...</td></tr>';
+        gridCatalogo.innerHTML = '<p style="text-align: center; color: var(--text-light); grid-column: 1 / -1;">Cargando catálogo visual...</p>';
 
-            <h3>Desde Visual Basic .NET (Equipo de Ventas) - Método POST</h3>
-            <pre>
-Dim client As New HttpClient()
-Dim jsonData As String = "{""nombre"":""Carlos"",""telefono"":""78945612""}"
-Dim content As New StringContent(jsonData, Encoding.UTF8, "application/json")
+        fetch(urlAPIPromociones)
+            .then(res => {
+                if(!res.ok) throw new Error('Error de conexión');
+                return res.json();
+            })
+            .then(promociones => {
+                tbody.innerHTML = '';
+                gridCatalogo.innerHTML = '';
 
-Dim response = Await client.PostAsync("http://192.168.69.141:5000/api/marketing/clientes", content)
-Dim responseString = Await response.Content.ReadAsStringAsync()
-Console.WriteLine(responseString)</pre>
+                if(promociones.length === 0) {
+                    tbody.innerHTML = '<tr><td colspan="3" style="text-align: center; color: var(--text-light);">Aún no has creado ninguna promoción.</td></tr>';
+                    gridCatalogo.innerHTML = '<p style="text-align: center; color: var(--text-light); grid-column: 1 / -1;">No hay promociones listas para vender.</p>';
+                    return;
+                }
 
-            <h3>Configuración en Postman</h3>
-            <ul>
-                <li><strong>Método:</strong> Seleccionar POST o GET según el endpoint.</li>
-                <li><strong>URL:</strong> <code>http://192.168.69.141:5000/api/...</code></li>
-                <li><strong>Body (solo para POST):</strong> Pestaña <code>Body</code> ➔ <code>raw</code> ➔ seleccionar <code>JSON</code>.</li>
-            </ul>
-        </section>
+                promociones.forEach(promo => {
+                    // 1. Llenamos el Historial Técnico (Tabla)
+                    const claseBadge = promo.activa ? "badge badge-activo" : "badge badge-inactivo";
+                    const textoBadge = promo.activa ? "Activa" : "Inactiva";
 
-        <!-- 8. MANEJO DE ERRORES -->
-        <section id="s8-errores">
-            <h1>8. Manejo de Errores</h1>
-            <p>La API utiliza códigos de estado HTTP estándar. Cualquier solicitud que falle retornará un JSON con la estructura del error.</p>
-            
-            <table>
-                <tr><th>Código HTTP</th><th>Significado</th><th>Acción requerida del Cliente</th></tr>
-                <tr><td><strong>200 OK</strong></td><td>Éxito.</td><td>Procesar la propiedad <code>data</code> de la respuesta.</td></tr>
-                <tr><td><strong>201 Created</strong></td><td>Registro Creado.</td><td>Confirmar al usuario en pantalla que el guardado fue exitoso.</td></tr>
-                <tr><td><strong>400 Bad Request</strong></td><td>Mala Petición.</td><td>El JSON enviado en el POST está mal formateado o faltan campos obligatorios.</td></tr>
-                <tr><td><strong>404 Not Found</strong></td><td>No Encontrado.</td><td>Verificar que la ruta escrita en la URL sea exactamente la documentada.</td></tr>
-                <tr><td><strong>500 Internal Error</strong></td><td>Error de Servidor.</td><td>Contactar al administrador backend. Posible falla de ejecución de Python.</td></tr>
-            </table>
+                    tbody.innerHTML += `
+                        <tr>
+                            <td style="font-weight: 500; color: var(--text-dark);">${promo.nombre_campana}</td>
+                            <td>${parseFloat(promo.precio_promocional).toFixed(2)} Bs</td>
+                            <td><span class="${claseBadge}">${textoBadge}</span></td>
+                        </tr>
+                    `;
 
-            <h3>Ejemplo de Respuesta de Error (Falta de datos)</h3>
-            <pre>
-{
-  "status": "error",
-  "mensaje": "El campo 'nombre' es obligatorio."
-}</pre>
-        </section>
+                    // 2. Llenamos el Catálogo Visual (Solo las promociones Activas)
+                    if(promo.activa) {
+                        let icono = "🍗"; 
+                        const nombreLower = promo.nombre_campana.toLowerCase();
+                        if(nombreLower.includes("familiar") || nombreLower.includes("amigos")) icono = "👨‍👩‍👧‍👦";
+                        if(nombreLower.includes("universitario") || nombreLower.includes("estudiante")) icono = "🎒";
+                        if(nombreLower.includes("mega") || nombreLower.includes("doble")) icono = "🍔";
+                        if(nombreLower.includes("fin de semana") || nombreLower.includes("viernes")) icono = "🎉";
 
-    </main>
+                        gridCatalogo.innerHTML += `
+                            <div class="tarjeta-promo">
+                                <div class="badge-etiqueta">Activa</div>
+                                <div class="tarjeta-icono">${icono}</div>
+                                <div class="tarjeta-titulo">${promo.nombre_campana}</div>
+                                <div class="tarjeta-precio">${parseFloat(promo.precio_promocional).toFixed(2)} Bs</div>
+                                <button class="tarjeta-btn">Lanzar a Ventas</button>
+                            </div>
+                        `;
+                    }
+                });
+
+                // Mensaje en caso de que todas las promociones estén inactivas
+                if (gridCatalogo.innerHTML === '') {
+                    gridCatalogo.innerHTML = '<p style="text-align: center; color: var(--text-light); grid-column: 1 / -1;">Hay promociones en el historial, pero ninguna está activa para la venta.</p>';
+                }
+            })
+            .catch(err => {
+                tbody.innerHTML = '<tr><td colspan="3" style="color:red; text-align:center;">Error al conectar con la base de datos (IP 141)</td></tr>';
+                gridCatalogo.innerHTML = '<p style="text-align: center; color: red; grid-column: 1 / -1;">Error de conexión con tu base de datos local.</p>';
+            });
+    }
+</script>
 
 </body>
 </html>
